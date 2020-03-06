@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  The purpose of UserMapper is to...
@@ -56,4 +57,39 @@ public class UserMapper {
         }
     }
 
+    public static ArrayList<User> getUsers() throws LoginSampleException {
+        ArrayList<User> users = new ArrayList<>();
+        try {
+            Connection con = Connector.connection();
+            String SQL = "SELECT * FROM useradmin.users WHERE role = \"customer\"";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(SQL);
+            while (rs.next()) {
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                String role = rs.getString("role");
+                User user = new User(email, password, role);
+                users.add(user);
+            }
+            return users;
+        } catch ( ClassNotFoundException | SQLException ex ) {
+            throw new LoginSampleException(ex.getMessage());
+        }
+    }
+
+    public static int getUserCounter() throws LoginSampleException {
+        int counter = 0;
+        try {
+            Connection con = Connector.connection();
+            String SQL = "SELECT count(*) as \"customers\" FROM useradmin.users WHERE role = \"customer\"";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(SQL);
+            if (rs.next()) {
+                counter = rs.getInt("customers");
+            }
+            return counter;
+        } catch ( ClassNotFoundException | SQLException ex ) {
+            throw new LoginSampleException(ex.getMessage());
+        }
+    }
 }

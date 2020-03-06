@@ -19,5 +19,15 @@
 
 
         You are now logged in as a EMPLOYEE of our wonderful site.
+
+        <br>
+        <br>
+        <br>
+        <form name="oversigt" action="FrontController" method="POST">
+            <input type="hidden" name="taget" value="oversigt">
+            List of customers:<br>
+
+            <input type="submit" value="Press here">
+        </form>
     </body>
 </html>
